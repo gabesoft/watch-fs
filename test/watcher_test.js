@@ -1,5 +1,6 @@
 var should  = require('should')
   , async   = require('async')
+  , exec    = require('child_process').exec
   , path    = require('path')
   , fs      = require('fs')
   , mkdirp  = require('mkdirp')
@@ -148,9 +149,34 @@ describe('Watcher', function () {
         });
     });
 
-    xit('should emit on file moved', function (done) {
-        // TODO: implement
-        done();
+    it('should emit delete & create on file moved', function (done) {
+        var f1  = path.join(dir, data[7].name)
+          , f2  = f1 + '.moved'
+          , rem = false
+          , add = false;
+
+        watcher.on('delete', function (file) {
+            file.should.equal(f1);
+            rem = true;
+            if (add) {
+                done();
+            }
+        });
+
+        watcher.on('create', function (file) {
+            file.should.equal(f2);
+            add = true;
+            if (rem) {
+                done();
+            }
+        });
+
+        watcher.start(function (err) {
+            should.not.exist(err);
+            exec('mv ' + f1 + ' ' + f2, function(err) {
+                should.not.exist(err);
+            });
+        });
     });
 
     xit('should watch single files', function (done) {
