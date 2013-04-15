@@ -16,8 +16,22 @@ var should  = require('should')
       , { name : 'a/b/c/w1.txt', type : 'file' }   // 7
     ];
 
-function deletefs (cb) {
-    fs.rmdir(dir, cb);
+function rmdir (dir, cb) {
+    fs.readdir(dir, function (err, files) {
+        if (err) { return cb(err); }
+        async.forEachSeries(files, function (f, next) {
+            var p = path.join(dir, f)
+              , s = fs.statSync(p);
+
+            if (f === '.' || f === '..') {
+                next();
+            } else if (s.isDirectory()) {
+                rmdir(p, next);
+            } else {
+                fs.unlink(p, next);
+            }
+        }, cb);
+    });
 }
 
 function buildfs (cb) {
@@ -26,65 +40,135 @@ function buildfs (cb) {
         if (d.type === 'dir') {
             mkdirp(p, next);
         } else {
-            fs.writeFile(p, Date.now(), next);
+            fs.writeFile(p, Date.now(), function(err) {
+                next(err);
+            });
         }
     }, cb);
 }
 
 describe('Watcher', function () {
+    var watcher = null;
+
     beforeEach(function (done) {
-        deletefs(function (err) {
-            buildfs(done);
+        rmdir(dir, function (err) {
+            buildfs(function (err) {
+                watcher = new Watcher({ dir: dir });
+                setTimeout(function () { done(err); }, 1000);
+            });
         });
+    });
+
+    afterEach(function () {
+        watcher.stop();
     });
 
     it('should emit on file created', function (done) {
-        var w = new Watcher({ dir: dir })
-          , f = path.join(dir, 'v1.txt');
-        w.on('created', function (file) {
+        var f = path.join(dir, 'v1.txt');
+
+        watcher.on('create', function (file) {
             file.should.equal(f);
             done();
         });
-        fs.writeFileSync(f, Date.now());
+
+        watcher.start(function (err) {
+            should.not.exist(err);
+            fs.writeFileSync(f, Date.now());
+        });
+    });
+
+    it('should emit on file created in a nested directory', function (done) {
+        var d      = path.join(dir, data[1].name)
+          , nested = path.join(d, 'n1')
+          , f      = path.join(nested, 'f1');
+
+        watcher.on('create', function (file) {
+            file.should.equal(f);
+            done();
+        });
+
+        watcher.start(function (err) {
+            should.not.exist(err);
+            mkdirp(nested, function (err) {
+                should.not.exist(err);
+                fs.writeFileSync(f, Date.now());
+            });
+        });
+    });
+
+    it('should emit on file changed in a nested directory', function (done) {
+        var d      = path.join(dir, data[1].name)
+          , nested = path.join(d, 'n1')
+          , f      = path.join(nested, 'f1');
+
+        watcher.on('change', function (file) {
+            file.should.equal(f);
+            done();
+        });
+
+        watcher.start(function (err) {
+            should.not.exist(err);
+            mkdirp(nested, function (err) {
+                should.not.exist(err);
+                fs.writeFileSync(f, Date.now());
+                setTimeout(function (argument) {
+                    fs.writeFileSync(f, Date.now());
+                }, 1000);
+            });
+        });
+
     });
 
     it('should emit on file deleted', function (done) {
-        var f = path.join(dir, data[7])
-          , d = path.dirname(f)
-          , w = new Watcher({ dir: d });
+        var f = path.join(dir, data[7].name)
+          , d = path.dirname(f);
 
-        w.on('deleted', function (file) {
+        watcher.on('delete', function (file) {
             file.should.equal(f);
             done();
+        });
+
+        watcher.start(function (err) {
+            should.not.exist(err);
+            fs.unlinkSync(f);
         });
     });
 
     it('should emit on file changed', function (done) {
+        var f = path.join(dir, data[7].name);
+
+        watcher.on('change', function (file) {
+            file.should.equal(f);
+            done();
+        });
+
+        watcher.start(function (err) {
+            should.not.exist(err);
+            fs.writeFileSync(f, Date.now());
+        });
+    });
+
+    xit('should emit on file moved', function (done) {
         // TODO: implement
         done();
     });
 
-    it('should emit on file moved', function (done) {
+    xit('should watch single files', function (done) {
         // TODO: implement
         done();
     });
 
-    it('should watch single files', function (done) {
+    xit('should watch directories', function (done) {
         // TODO: implement
         done();
     });
 
-    it('should watch directories', function (done) {
+    xit('should watch recursively', function (done) {
         // TODO: implement
         done();
     });
 
-    it('should watch recursively', function (done) {
-        // TODO: implement
-        done();
-    });
-
-    it('should filter watched files', function (done) {
+    xit('should filter watched files', function (done) {
         // TODO: implement
         done();
     });
