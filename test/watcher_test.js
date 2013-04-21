@@ -148,6 +148,23 @@ describe('Watcher', function () {
                 }, 200);
             });
         });
+
+        it('should use filters', function (done) {
+            var filter = function (name) { return /y\d\.txt/.test(name); };
+            watcher    = new Watcher({ dir: dir, filters: { includeFile: filter } });
+
+            watcher.on('change', function (name) {
+                name.should.match(/y\d\.txt/);
+                done();
+            });
+
+            watcher.start(function (err) {
+                should.not.exist(err);
+                fs.writeFileSync(path.join(dir, data[2].name), Date.now());
+                fs.writeFileSync(path.join(dir, data[3].name), Date.now());
+                fs.writeFileSync(path.join(dir, data[4].name), Date.now());
+            });
+        });
     });
 
     describe('When watching single files', function () {
@@ -199,10 +216,5 @@ describe('Watcher', function () {
                 fs.writeFileSync(file, Date.now());
             });
         });
-    });
-
-    xit('should filter watched files', function (done) {
-        // TODO: implement
-        done();
     });
 });
