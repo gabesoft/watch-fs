@@ -181,7 +181,7 @@ describe('Watcher', function () {
             });
         });
 
-        it('should emit symlink', function (done) {
+        it('should emit on symlink', function (done) {
             var file    = path.join(dir, data[6].name)
               , link    = path.join(dir, 'link1')
               , watcher = new Watcher({ file: link });
