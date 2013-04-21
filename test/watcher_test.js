@@ -136,6 +136,18 @@ describe('Watcher', function () {
                 });
             });
         });
+
+        it('should not follow symbolic links', function (done) {
+            var link = path.join(dir, 'tdir2');
+            fs.symlinkSync(dir, link, 'dir');
+
+            watcher.start(function (err) {
+                should.not.exist(err);
+                setTimeout(function () {
+                    done();
+                }, 200);
+            });
+        });
     });
 
     describe('When watching single files', function () {
@@ -169,6 +181,24 @@ describe('Watcher', function () {
             });
         });
 
+        it('should emit symlink', function (done) {
+            var file    = path.join(dir, data[6].name)
+              , link    = path.join(dir, 'link1')
+              , watcher = new Watcher({ file: link });
+
+            fs.symlinkSync(file, link, 'file');
+
+            watcher.on('change', function (name) {
+                if (name === link) {
+                    done();
+                }
+            });
+
+            watcher.start(function (err) {
+                should.not.exist(err);
+                fs.writeFileSync(file, Date.now());
+            });
+        });
     });
 
     xit('should filter watched files', function (done) {

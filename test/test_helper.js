@@ -19,11 +19,11 @@ function rmdir (dir, cb) {
         if (err) { return cb(err); }
         async.forEachSeries(files, function (f, next) {
             var p = path.join(dir, f)
-              , s = fs.statSync(p);
+              , s = fs.lstatSync(p);
 
             if (f === '.' || f === '..') {
                 next();
-            } else if (s.isDirectory()) {
+            } else if (s.isDirectory() && !s.isSymbolicLink()) {
                 rmdir(p, next);
             } else {
                 fs.unlink(p, next);
