@@ -2,7 +2,7 @@
     "name"         : "watchfs",
     "version"      : "0.0.1",
     "description"  : "Filesystem watcher",
-    "main"         : "index.js",
+    "main"         : "lib/watcher.js",
     "dependencies" : {
         "async" : "~0.2.7"
     },
