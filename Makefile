@@ -1,6 +1,6 @@
 default: setup
 
-MOCHA=node_modules/.bin/mocha
+MOCHA=node_modules/.bin/mocha --timeout 5000
 
 all: setup test
 

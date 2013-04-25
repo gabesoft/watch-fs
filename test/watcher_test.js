@@ -1,5 +1,6 @@
 var should  = require('should')
   , exec    = require('child_process').exec
+  , async   = require('async')
   , path    = require('path')
   , fs      = require('fs')
   , mkdirp  = require('mkdirp')
@@ -164,6 +165,47 @@ describe('Watcher', function () {
                 fs.writeFileSync(path.join(dir, data[3].name), Date.now());
                 fs.writeFileSync(path.join(dir, data[4].name), Date.now());
             });
+        });
+    });
+
+    describe('When watching for multiple changes', function () {
+        it('should emit on file changed', function (done) {
+            var f     = path.join(dir, data[6].name)
+              , count = 0;
+
+            watcher = new Watcher({ file: f });
+
+            watcher.on('change', function (file) {
+                file.should.equal(f);
+                count++;
+
+                if (count === 4) {
+                    done();
+                }
+            });
+
+            async.series([
+                function (next) { watcher.start(next); }
+              , function (next) {
+                    fs.writeFileSync(f, Date.now());
+                    setTimeout(next, 1000);
+                }
+              , function (next) {
+                    fs.writeFileSync(f, Date.now());
+                    setTimeout(next, 1000);
+                }
+              , function (next) {
+                    exec('echo test2 >> ' + f, function(err) {
+                        should.not.exist(err);
+                        setTimeout(next, 1000);
+                    });
+                }
+              , function (next) {
+                    exec('echo test2 >> ' + f, function(err) {
+                        should.not.exist(err);
+                    });
+                }
+            ]);
         });
     });
 
