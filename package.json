@@ -1,19 +1,19 @@
 {
-    "name"         : "watchfs",
-    "version"      : "0.0.1",
-    "description"  : "Filesystem watcher",
-    "main"         : "lib/watcher.js",
-    "dependencies" : {
-        "async" : "~0.2.7"
-    },
-    "devDependencies": {
-        "mocha"  : "~1.9.0",
-        "should" : "~1.2.2",
-        "mkdirp" : "~0.3.5"
-    },
-    "author": {
-        "name"  : "Gabriel Adomnicai",
-        "email" : "gabesoft@gmail.com"
-    },
-    "license": "MIT"
+  "name": "watchfs",
+  "version": "0.0.2",
+  "description": "Filesystem watcher",
+  "main": "lib/watcher.js",
+  "dependencies": {
+    "async": "~0.2.7"
+  },
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "should": "~1.2.2",
+    "mkdirp": "~0.3.5"
+  },
+  "author": {
+    "name": "Gabriel Adomnicai",
+    "email": "gabesoft@gmail.com"
+  },
+  "license": "MIT"
 }
