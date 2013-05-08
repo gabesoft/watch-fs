@@ -1,5 +1,6 @@
 NERD_tree_*
 node_modules
+test/tdir
 .stat-test
 .DS_Store
 *.log
