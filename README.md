@@ -79,7 +79,7 @@ var watcher = new Watcher({
     paths: '/work/my-project',
     filters: {
         includeDir: function(fullPath) {
-            var skip = /(\.git)|(node_modules)/.test(name);
+            var skip = /(\.git)|(node_modules)/.test(fullPath);
             return !skip;
         },
         includeFile: function(fullPath) {
