@@ -34,7 +34,7 @@ The following options can be specified when creating a Watcher object
 ### options.paths
 
 This could be a string or an array containing paths to files or directories.  
-Any directories specified will be watched recursively unless limited by filtering  
+Any directories specified will be watched recursively unless limited by filtering.  
 
 ```javascript
 var watcher1 = new Watcher({
@@ -80,6 +80,23 @@ var watcher = new Watcher({
             return /\.js/.test(fullPath);
         }
     }
+});
+```
+
+## Events
+
+* `create` fired when a file is created
+* `change` fired when a file is changed
+* `delete` fired when a file is deleted
+* `any` fires when any of the above events fire
+
+```javascript
+watcher.on('create', function(name) {
+    console.log('file ' + name + ' created');
+});
+
+watcher.on('any', function(name, type) {
+    console.log('file ' + name + ' ' + type + 'd');
 });
 ```
 
