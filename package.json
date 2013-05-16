@@ -1,6 +1,6 @@
 {
   "name": "watchfs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Filesystem watcher",
   "main": "lib/watcher.js",
   "dependencies": {
