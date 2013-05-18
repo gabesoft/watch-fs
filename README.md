@@ -31,6 +31,10 @@ watcher.on('create', function(name) {
 watcher.on('change', function(name) {
     console.log('file ' + name + ' changed');
 });
+
+watcher.on('delete', function(name) {
+    console.log('file ' + name + ' deleted');
+});
 ```
 
 ## options
