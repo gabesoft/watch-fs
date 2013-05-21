@@ -37,7 +37,7 @@ watcher.on('delete', function(name) {
 });
 ```
 
-## options
+## Options
 
 The following options can be specified when creating a Watcher object
 
@@ -63,7 +63,7 @@ Filters can be used to limit which files or directories are being watched.
 Both functions will be called when traversing the file system with the full path of each  
 file or directory encountered.  
 
-The example below will watch only the specified folder and will recurse only one folder below  
+The example below will watch the specified folder and will recurse only one folder below  
 
 ```javascript
 var watcher = new Watcher({
