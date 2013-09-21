@@ -1,3 +1,7 @@
+0.0.5
+-----
+Added repo info in package
+
 0.0.4
 -----
 Initial release
