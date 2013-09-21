@@ -1,3 +1,7 @@
+0.0.4
+-----
+Initial release
+
 0.0.3
 -----
 Readme + minor fixes
