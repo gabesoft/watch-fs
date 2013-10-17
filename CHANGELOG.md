@@ -1,3 +1,7 @@
+0.0.6
+-----
+Added stats to the event data
+
 0.0.5
 -----
 Added repo info in package
