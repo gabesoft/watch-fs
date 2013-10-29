@@ -1,3 +1,7 @@
+0.0.7
+-----
+Symbolic link fixes + doc update
+
 0.0.6
 -----
 Added stats to the event data
