@@ -38,10 +38,14 @@ watcher.on('delete', function(name) {
     console.log('file ' + name + ' deleted');
 });
 
-watcher.start(function(err) {
+watcher.start(function(err, failed) {
     console.log('watcher started');
 });
 ```
+
+## Start
+This will start the watcher. Any files that could not be accessed are passed 
+to the callback as an array of objects of the type ``{ path: name, error: err }``
 
 ## Options
 
