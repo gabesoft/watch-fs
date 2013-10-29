@@ -41,6 +41,7 @@ watcher.on('delete', function(name) {
 
 watcher.start(function(err, failed) {
     console.log('watcher started');
+    console.log('files not found', failed);
 });
 ```
 
