@@ -45,7 +45,8 @@ watcher.start(function(err, failed) {
 
 ## Start
 This will start the watcher. Any files that could not be accessed are passed 
-to the callback as an array of objects of the type ``{ path: name, error: err }``
+to the second parameter of the callback as an array of objects of the type 
+``{ path: name, error: err }``
 
 ## Options
 
