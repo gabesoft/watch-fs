@@ -25,6 +25,18 @@ describe('Watcher', function () {
 
     afterEach(function () { watcher.stop(); });
 
+    describe('When starting', function () {
+        it('should return a list of files that could not be accessed', function (done) {
+            var paths = [ 'nonexistent.foo' ];
+            watcher = new Watcher({ paths:  paths });
+            watcher.start(function (err, failed) {
+                failed.length.should.equal(1);
+                failed[0].path.should.match(new RegExp(paths[0]));
+                done();
+            });
+        });
+    });
+
     describe('When watching directories', function () {
 
         it('should emit on file created', function (done) {
