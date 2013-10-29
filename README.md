@@ -10,6 +10,12 @@ ____/|__/ \__,_/ \__/ \___/ /_/ /_/       /_/    /____/
 
 *Watches your files and folders and gets out of the way*
 
+## Install
+
+```
+$ npm install watch-fs
+```
+
 ##Quickstart
 
 Watching files in a directory is as simple as instantiating a watcher and handling  
