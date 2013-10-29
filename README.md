@@ -16,7 +16,7 @@ Watching files in a directory is as simple as instantiating a watcher and handli
 events emitted when files get created, changed, or deleted.
 
 ```javascript
-Var Watcher = require('watchfs').Watcher;
+var Watcher = require('watch-fs').Watcher;
 
 var watcher = new Watcher({
     paths: [ 'path-to-my-dir', 'path-to-my-file', 'etc' ],
@@ -24,7 +24,8 @@ var watcher = new Watcher({
         includeFile: function(name) {
             return /\.js/.test(name);
         }
-    });
+    }
+});
 
 watcher.on('create', function(name) {
     console.log('file ' + name + ' created');
