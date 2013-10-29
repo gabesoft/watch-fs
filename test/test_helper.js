@@ -45,7 +45,8 @@ function buildfs (cb) {
     }, cb);
 }
 
-module.exports.rmdir   = rmdir;
-module.exports.buildfs = buildfs;
-module.exports.data    = data;
-module.exports.testdir = dir;
+module.exports.rmdir     = rmdir;
+module.exports.buildfs   = buildfs;
+module.exports.data      = data;
+module.exports.testdir   = dir;
+module.exports.staticDir = path.join(__dirname, 'tdir.static');

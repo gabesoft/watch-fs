@@ -270,5 +270,24 @@ describe('Watcher', function () {
                 fs.writeFileSync(file, Date.now());
             });
         });
+
+        it('should emit on relative path symlink', function (done) {
+            var file    = path.join(helper.staticDir, 'file.js')
+              , link    = path.join(helper.staticDir, 'a', 'file.js')
+              , watcher = new Watcher({ file: link });
+
+            watcher.on('change', function (name) {
+                if (name === link) {
+                    done();
+                }
+            });
+
+            watcher.start(function(err) {
+                var orig = fs.readFileSync(file);
+                should.not.exist(err);
+                fs.writeFileSync(file, Date.now());
+                fs.writeFileSync(file, orig);
+            });
+        });
     });
 });
