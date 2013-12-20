@@ -56,6 +56,9 @@ This will start the watcher. Any files that could not be accessed are passed
 to the second parameter of the callback as an array of objects of the type 
 ``{ path: name, error: err }``
 
+## Stop
+Stops the watcher if running 
+
 ## Options
 
 The following options can be specified when creating a Watcher object
